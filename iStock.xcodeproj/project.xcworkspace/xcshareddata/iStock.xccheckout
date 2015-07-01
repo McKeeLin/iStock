@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>036085EF-6C9F-4088-A99C-EE742C0FEED7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>iStock</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>73f008f8-211d-6969-32a8-ce57b7db7bff</key>
+		<string>https://github.com/McKeeLin/iStock.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iStock/iStock.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>73f008f8-211d-6969-32a8-ce57b7db7bff</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>73f008f8-211d-6969-32a8-ce57b7db7bff</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>73f008f8-211d-6969-32a8-ce57b7db7bff</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iStock</string>
+		</dict>
+	</array>
+</dict>
+</plist>
