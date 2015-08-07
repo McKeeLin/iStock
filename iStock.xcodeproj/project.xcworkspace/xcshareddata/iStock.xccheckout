@@ -10,29 +10,31 @@
 	<string>iStock</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>73f008f8-211d-6969-32a8-ce57b7db7bff</key>
+		<key>D82A7053C5FFE8FF6D1251A62682E84E353C247F</key>
 		<string>https://github.com/McKeeLin/iStock.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>iStock/iStock.xcodeproj</string>
+	<string>iStock.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>73f008f8-211d-6969-32a8-ce57b7db7bff</key>
-		<string>../../..</string>
+		<key>D82A7053C5FFE8FF6D1251A62682E84E353C247F</key>
+		<string>../..</string>
 	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/McKeeLin/iStock.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>73f008f8-211d-6969-32a8-ce57b7db7bff</string>
+	<string>D82A7053C5FFE8FF6D1251A62682E84E353C247F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
+			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>73f008f8-211d-6969-32a8-ce57b7db7bff</string>
+			<string>D82A7053C5FFE8FF6D1251A62682E84E353C247F</string>
 			<key>IDESourceControlWCCName</key>
-			<string>iStock</string>
+			<string>stock</string>
 		</dict>
 	</array>
 </dict>

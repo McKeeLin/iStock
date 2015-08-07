@@ -82,6 +82,8 @@
 
 @property dataMgr *dm3;
 
+@property dataMgr *dm4;
+
 
 @end
 
@@ -92,18 +94,22 @@
 
     // Do any additional setup after loading the view.
     _dm2 = [[dataMgr alloc] init];
-    _dm2.code = @"sz000418";
-    _dm2.myPrice = 23.70;
+    _dm2.code = @"sh601989";
+    _dm2.myPrice = 9.62;
     _dmSH = [[dataMgr alloc] init];
     _dmSH.code = @"sh000001";
     _dm3 = [[dataMgr alloc] init];
-    _dm3.code = @"sz000776";
-    _dm3.myPrice = 22.85;//28.502;
+    _dm3.code = @"sh600600";
+    _dm3.myPrice = 39.22;
+    _dm4 = [[dataMgr alloc] init];
+    _dm4.code = @"sz000776";
+    _dm4.myPrice = 22.85;//28.502;
 
     
     self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUpdateNotification:) name:NN_STOCK_UPDATE object:nil];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    
 }
 
 - (void)setRepresentedObject:(id)representedObject {
@@ -114,9 +120,25 @@
 
 - (void)onTimer:(NSTimer*)timer
 {
+    NSDateComponents *componets = [self currentDateComponents];
+    if( componets.hour < 9 ) return;
+    if( componets.hour == 9 && componets.minute < 15 ) return;
+    if( componets.hour == 11 && componets.minute > 30 ) return;
+    if( componets.hour > 11 && componets.hour < 13 ) return;
+    if( componets.hour == 15 && componets.minute > 1 ) return;
+    if( componets.hour > 15 ) return;
+    
     [_dm2 getRealtimeData];
 //    [_dm3 getRealtimeData];
+//    [_dm4 getRealtimeData];
     [_dmSH getRealtimeData];
+}
+
+-(NSDateComponents*)currentDateComponents
+{
+    NSDate *today = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    return [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond|NSCalendarUnitWeekday fromDate:today];
 }
 
 
@@ -128,7 +150,7 @@
         NSLog(@"%@ \t%.02f", data.price, data.todayPer);
     }
     else{
-        NSLog(@"%@ \t%.02f\t%.02f\t\t%@(%d,%d)\t\t\t%@\t\t%@\t\t%@", data.price, data.max, data.min, data.diffTotal, data.maxs, data.maxb, data.exchangedRate, [self valueString:data.todayPer], [self valueString:data.myPer]);
+        NSLog(@"%@ \t%.02f\t%.02f\t\t%@(%d,%d) (%d,%d)\t\t\t%@\t\t%@\t\t%@", data.price, data.max, data.min, data.diffTotal, data.maxs, data.cs, data.maxb, data.cb, data.exchangedRate, [self valueString:data.todayPer], [self valueString:data.myPer]);
     }
     
     if( [data.code isEqualToString:@"sz000418"] ){
@@ -189,6 +211,8 @@
     else{
         return [NSString stringWithFormat:@"%d", (int)tempValue];
     }
+    
 }
+
 
 @end

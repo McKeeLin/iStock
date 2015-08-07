@@ -14,6 +14,10 @@
  v_sh600010="1~包钢股份~600010~6.48~6.50~6.48~5450568~2936484~2514084~6.48~15683~6.47~2829~6.46~6131~6.45~4314~6.44~1262~6.49~5220~6.50~16021~6.51~8401~6.52~9059~6.53~8193~15:00:01/6.48/3772/S/2447043/14901|14:59:56/6.49/3638/B/2358823/14898|14:59:46/6.49/1371/B/889301/14895|14:59:41/6.48/1570/S/1017768/14892|14:59:26/6.49/4626/B/3000091/14886|14:59:26/6.48/2531/S/1641664/14881~20150604150453~-0.02~-0.31~6.55~6.01~6.49/5446796/3465884971~5450568~346833~3.46~956.24~~6.55~6.01~8.31~1020.08~2109.93~5.47~7.15~5.85~";
  */
 
+/*
+ http://hq.stock.sohu.com/cn/776/cn_000776-1.html
+ */
+
 #import "dataMgr.h"
 #import "AFNetworking.h"
 
@@ -39,6 +43,8 @@ AFHTTPRequestOperationManager *_manager;
         _todayPer = 0;
         _maxb = 0;
         _maxs = 0;
+        _cb = 0;
+        _cs = 0;
     }
     return self;
 }
@@ -173,6 +179,7 @@ AFHTTPRequestOperationManager *_manager;
             int diffb = buy - _lastb;
             if( diffb > _maxb ) _maxb = diffb;
             data.maxb = _maxb;
+            data.cb = diffb;
         }
         _lastb = buy;
         
@@ -181,6 +188,7 @@ AFHTTPRequestOperationManager *_manager;
             int diffs = sell - _lasts;
             if( diffs > _maxs ) _maxs = diffs;
             data.maxs = _maxs;
+            data.cs = diffs;
         }
         _lasts = sell;
         

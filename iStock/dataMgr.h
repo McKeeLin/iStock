@@ -93,6 +93,10 @@
 
 @property int maxs;
 
+@property int cb;
+
+@property int cs;
+
 @end
 
 
