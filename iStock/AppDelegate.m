@@ -23,6 +23,8 @@
     [window setOpaque:NO];
     window.backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:0 alpha:0.021];
     window.alphaValue = 0.119;
+//    [window setLevel:100000];
+//    [[NSApp dockTile] setShowsApplicationBadge:YES];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

@@ -9,6 +9,7 @@
 
 #import "ViewController.h"
 #import "dataMgr.h"
+#import "mySQL.h"
 
 // 6277
 // 942
@@ -16,6 +17,11 @@
 
 
 @interface ViewController ()
+{
+    mySQL *_mySQL;
+    NSView *_anchor;
+    
+}
 
 
 @property IBOutlet NSTextField *s1;
@@ -73,13 +79,43 @@
 
 @property IBOutlet NSTextField *ts;
 
+@property IBOutlet NSTextField *tmax;
+
+@property IBOutlet NSTextField *tmin;
+
 @property IBOutlet NSView *titlebar;
+
+@property IBOutlet NSTextField *bns;
+
+@property IBOutlet NSTextField *shTf;
+
+@property IBOutlet NSTextField *szTf;
+
+@property IBOutlet NSTextField *cybTf;
+
+@property IBOutlet NSTextField *perTf;
+
+@property IBOutlet NSTextField *exchangeTf;
+
+@property IBOutlet NSTextField *mxpTf;
+
+@property IBOutlet NSTextField *mnpTf;
+
+@property NSString *sh;
+
+@property NSString *sz;
+
+@property NSString *cyb;
 
 @property dataMgr *dm601668;
 
 @property dataMgr *dm2;
 
 @property dataMgr *dmSH;
+
+@property dataMgr *dmSZ;
+
+@property dataMgr *dmCYB;
 
 @property dataMgr *dm3;
 
@@ -92,31 +128,69 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    /*
+    _mySQL = [[mySQL alloc] init];
+    _mySQL.host = @"127.0.0.1";
+    _mySQL.port = 3306;
+    _mySQL.user = @"root";
+    _mySQL.password = @"";
+    _mySQL.database = @"new_schema";
+    if( [_mySQL connect] )
+    {
+        [_mySQL execute:@"select * from new_schema.t1"];
+    }
+    */
 
     // Do any additional setup after loading the view.
+    /*
+     zgjz   601668  7.00
+     hdxx   300170
+     zjdr   600113
+     gfzq   000776  22.85
+     zggh   601111  11.10
+     hygf   000861  16.47
+     hszs   300208  44.00
+     zghd   601985  7.86
+     jnfd   601016  11.22
+     */
     _dm2 = [[dataMgr alloc] init];
-    _dm2.code = @"sh601989";
-    _dm2.myPrice = 9.62;
+    _dm2.code = @"sz300170";
+    _dm2.myPrice = 13.56;
+    _dm2.observeLP = 0;
+    _dm2.observeHP = 0;
     _dmSH = [[dataMgr alloc] init];
     _dmSH.code = @"sh000001";
+    _dmSZ = [[dataMgr alloc] init];
+    _dmSZ.code = @"sz399001";
+    _dmCYB = [[dataMgr alloc] init];
+    _dmCYB.code = @"sz399006";
     _dm3 = [[dataMgr alloc] init];
-    _dm3.code = @"sh600600";
-    _dm3.myPrice = 39.22;
+    _dm3.code = @"sh601016";
+    _dm3.myPrice = 11.22;
     _dm4 = [[dataMgr alloc] init];
-    _dm4.code = @"sz000776";
-    _dm4.myPrice = 22.85;//28.502;
 
     
     self.view.layer.backgroundColor = [NSColor clearColor].CGColor;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUpdateNotification:) name:NN_STOCK_UPDATE object:nil];
     [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
-    
+
+    _anchor = [[NSView alloc] initWithFrame:CGRectZero];
+    _anchor.layer.cornerRadius = 5;
+    _anchor.layer.backgroundColor = [NSColor colorWithRed:1 green:0 blue:0 alpha:0.5].CGColor;
+    [self.view addSubview:_anchor];
 }
 
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
 
     // Update the view, if already loaded.
+}
+
+- (void)viewDidLayout
+{
+    [super viewDidLayout];
+    _anchor.frame = CGRectMake(0,0,10,10);
 }
 
 - (void)onTimer:(NSTimer*)timer
@@ -127,12 +201,13 @@
     if( componets.hour == 11 && componets.minute > 30 ) return;
     if( componets.hour > 11 && componets.hour < 13 ) return;
     if( componets.hour == 15 && componets.minute > 1 ) return;
-    if( componets.hour > 15 ) return;
+//    if( componets.hour > 15 ) return;
     
     [_dm2 getRealtimeData];
-//    [_dm3 getRealtimeData];
-//    [_dm4 getRealtimeData];
+    [_dm3 getRealtimeData];
     [_dmSH getRealtimeData];
+    [_dmSZ getRealtimeData];
+    [_dmCYB getRealtimeData];
 }
 
 -(NSDateComponents*)currentDateComponents
@@ -149,12 +224,26 @@
     RealtimeData *data = [notification.userInfo objectForKey:@"data"];
     if( [data.code isEqualToString:@"sh000001"] ){
         NSLog(@"%@ \t%.02f", data.price, data.todayPer);
+        self.sh = [NSString stringWithFormat:@"sh:%@(%.02f)", data.price, data.todayPer];
+        _shTf.stringValue = self.sh;
     }
-    else{
-        NSLog(@"%@ \t%.02f\t%.02f\t\t%@(%d,%d) (%d,%d)\t\t\t%@\t\t%@\t\t%@", data.price, data.max, data.min, data.diffTotal, data.maxs, data.cs, data.maxb, data.cb, data.exchangedRate, [self valueString:data.todayPer], [self valueString:data.myPer]);
+    else if( [data.code isEqualToString:@"sz399001"] )
+    {
+        self.sz = [NSString stringWithFormat:@"sz:%@(%.02f)", data.price, data.todayPer];
+        _szTf.stringValue = self.sz;
+    }
+    else if( [data.code isEqualToString:@"sz399006"] )
+    {
+        self.cyb = [NSString stringWithFormat:@"cyb:%@(%.02f)", data.price, data.todayPer];
+        _cybTf.stringValue = self.cyb;
+    }
+    else {
+        if( ![data.code isEqualToString:_dm3.code] ){
+            NSLog(@"%@ \t%.02f\t%.02f\t\t%@s(%d,%d) b(%d,%d)\t\t\t%@\t\t%@\t\t%@", data.price, data.max, data.min, data.diffTotal, data.maxs, data.cs, data.maxb, data.cb, data.exchangedRate, [self valueString:data.todayPer], [self valueString:data.myPer]);
+        }
     }
     
-    if( [data.code isEqualToString:@"sz000418"] ){
+    if( [data.code isEqualToString:_dm2.code] ){
         [_s5 setStringValue:data.s5];
         [_s4 setStringValue:data.s4];
         [_s3 setStringValue:data.s3];
@@ -184,6 +273,12 @@
         
         [_ye setStringValue:data.yestodayEndPrice];
         [_ts setStringValue:data.todayBeginPrice];
+        [_perTf setStringValue:[NSString stringWithFormat:@"%.2f", data.myPer]];
+        [_exchangeTf setStringValue:data.exchangedRate];
+        [_mxpTf setStringValue:[NSString stringWithFormat:@"%.2f", data.max]];
+        [_mnpTf setStringValue:[NSString stringWithFormat:@"%.2f", data.min]];
+        NSString *bns = [NSString stringWithFormat:@"%@s(%d,%d) b(%d,%d)",data.diffTotal, data.maxs, data.cs, data.maxb, data.cb];
+        [_bns setStringValue:bns];
 //        [_ep setStringValue:[NSString stringWithFormat:@"%f", data.earnPercentage]];
         int st = [data.sc1 intValue];
         st += [data.sc2 intValue];
@@ -198,6 +293,26 @@
         bt += data.bc5.intValue;
         bt -= st;
         [_ep setStringValue:[NSString stringWithFormat:@"%d", bt]];
+        if( _dm2.observeLP != 0 && data.price.floatValue <= _dm2.observeLP ){
+            [NSApp requestUserAttention:0];
+        }
+        
+        if( _dm2.observeHP != 0 && data.price.floatValue >= _dm2.observeHP ){
+//            [NSApp dockTile].showsApplicationBadge = YES;
+            [[NSApp dockTile] setBadgeLabel:@"1"];
+        }
+        else{
+//            [NSApp dockTile].showsApplicationBadge = NO;
+            [[NSApp dockTile] setBadgeLabel:nil];
+        }
+        
+        if( [_tmax.stringValue isEqualToString:@"max"] )
+        {
+            CGFloat tmax = data.yestodayEndPrice.floatValue * 1.1;
+            CGFloat tmin = data.yestodayEndPrice.floatValue * 0.9;
+            _tmax.stringValue = [NSString stringWithFormat:@"%.2f", tmax];
+            _tmin.stringValue = [NSString stringWithFormat:@"%.2f", tmin];
+        }
     }
 }
 

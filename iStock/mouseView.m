@@ -41,8 +41,8 @@
     NSWindow *window = windows.firstObject;
     CGFloat alpha = window.alphaValue;
     alpha += theEvent.deltaY/5;
-    if( alpha < 0 ) alpha = 0.2;
-    if( alpha > 1.0 ) alpha = 1.0;
+    if( alpha < 0.05 ) alpha = 0.05;
+    if( alpha > 0.15 ) alpha = 0.15;
     window.alphaValue = alpha;
     NSLog(@"-----------%f", alpha);
 }

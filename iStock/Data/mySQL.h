@@ -10,4 +10,23 @@
 
 @interface mySQL : NSObject
 
+@property NSString *host;
+
+@property unsigned int  port;
+
+@property NSString *user;
+
+@property NSString *password;
+
+@property NSString *database;
+
+
+- (BOOL)connentTo:(NSString*)host port:(int)port user:(NSString*)user password:(NSString*)password database:(NSString*)database;
+
+- (BOOL)connect;
+
+- (void)close;
+
+- (BOOL)execute:(NSString*)sql;
+
 @end

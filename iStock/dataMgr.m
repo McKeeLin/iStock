@@ -25,6 +25,7 @@ AFHTTPRequestOperationManager *_manager;
 
 @interface RealtimeData ()
 {
+
 }
 
 @end
@@ -45,6 +46,7 @@ AFHTTPRequestOperationManager *_manager;
         _maxs = 0;
         _cb = 0;
         _cs = 0;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"" object:nil];
     }
     return self;
 }
@@ -73,6 +75,7 @@ AFHTTPRequestOperationManager *_manager;
         _lasts = 0;
         _maxb = 0;
         _maxs = 0;
+        
     }
     return self;
 }
@@ -160,6 +163,10 @@ AFHTTPRequestOperationManager *_manager;
     NSStringEncoding gbkEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     NSString *result = [[NSString alloc] initWithData:_receivedData encoding:gbkEncoding];
     NSString *response = result;
+    if( [response rangeOfString:@"pv_none_match=1"].location != NSNotFound )
+    {
+        return;
+    }
     response = [response stringByReplacingOccurrencesOfString:@"\"" withString:@""];
     response = [response stringByReplacingOccurrencesOfString:@"\"" withString:@""];
     NSArray *a1 = [response componentsSeparatedByString:@"="];
@@ -234,6 +241,10 @@ AFHTTPRequestOperationManager *_manager;
         data.max = _max;
         if( data.price.floatValue > 0 ){
             data.todayPer = ((data.price.floatValue - data.yestodayEndPrice.floatValue) / data.yestodayEndPrice.floatValue) * 100;
+            if( _myPrice == 0 )
+            {
+                _myPrice = data.price.floatValue;
+            }
             data.myPer = ((data.price.floatValue - _myPrice) / _myPrice) * 100;
         }
         NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:0];

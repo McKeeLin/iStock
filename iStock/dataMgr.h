@@ -111,6 +111,10 @@
 
 @property CGFloat myEarn;
 
+@property CGFloat observeLP;
+
+@property CGFloat observeHP;
+
 @property NSInteger count;
 
 @property int lastb;
